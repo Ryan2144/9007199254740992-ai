@@ -264,15 +264,3 @@ Grid.prototype.scoreGrid = function() {
   }
   return score;
 }
-
-// Grid.prototype.scoreGrid = function() {
-//   var score = 0;
-//   for(var x = 0; x < this.size; x++) {
-//     for(var y = 0; y < this.size; y++) {
-//       if(x == 0 && y == 0 && this.cells[x][y]) {
-//         score += this.cells[x][y].value;
-//       }
-//     }
-//   }
-//   return score;
-// }
