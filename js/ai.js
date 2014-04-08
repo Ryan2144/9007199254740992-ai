@@ -35,11 +35,3 @@ with score being the gridScore after the move is completed in the given directio
 AI.prototype.selectBestMove = function(possibleMoves) {
 
 }
-
-
-
-
-
-
-
-
