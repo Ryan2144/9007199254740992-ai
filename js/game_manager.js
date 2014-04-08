@@ -4,19 +4,36 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
 
+  this.running        = false;
+
   this.startTiles     = 2;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+  this.inputManager.on("runAI", this.toggleAI.bind(this));
 
   this.setup();
+}
+
+// Start and stop the AI
+GameManager.prototype.toggleAI = function () {
+  if (this.running) {
+    this.running = false;
+    this.actuator.setRunButton('Start AI');
+  } else {
+    this.running = true;
+    this.runAI();
+    this.actuator.setRunButton('Stop');
+  }
 }
 
 // Restart the game
 GameManager.prototype.restart = function () {
   this.storageManager.clearGameState();
   this.actuator.continueGame(); // Clear the game won/lost message
+  this.running = false;
+  this.actuator.setRunButton('Start AI');
   this.setup();
 };
 
@@ -47,12 +64,18 @@ GameManager.prototype.setup = function () {
     this.over        = previousState.over;
     this.won         = previousState.won;
     this.keepPlaying = previousState.keepPlaying;
+
+    this.ai          = new AI(this.grid);
+
+
   } else {
     this.grid        = new Grid(this.size);
     this.score       = 0;
     this.over        = false;
     this.won         = false;
     this.keepPlaying = false;
+
+    this.ai          = new AI(this.grid);
 
     // Add the initial tiles
     this.addStartTiles();
@@ -274,3 +297,15 @@ GameManager.prototype.tileMatchesAvailable = function () {
 GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
 };
+
+
+GameManager.prototype.runAI = function() {
+  this.move(this.ai.getBest());
+  var timeout = animationDelay; // See application.js for global animationDelay
+  if (this.running && !this.over && !this.won) {
+    var self = this;
+    setTimeout(function(){ 
+      self.runAI(); 
+    }, timeout);
+  }
+}
