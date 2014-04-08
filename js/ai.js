@@ -35,5 +35,30 @@ A move is an object defined as { direction: direction, score: score }
 
 */
 AI.prototype.selectBestMove = function(possibleMoves) {
-
+	if (possibleMoves.length == 1 && possibleMoves[0] == 0) { //check if up is only move (0 means up)
+		return possibleMoves[0];
+	}
+	else if (isBottomFull()) { //if bottom is full just do the best move
+		return selectHighestScoringMove(possibleMoves);
+	}
+	else { //bottom is not full, possible directions are only down and right
+		for (var i=0; i < possibleMoves.length; i++) {
+			if (possibleMoves[i] == 0 || possibleMoves[i] == 3 ) { //get rid of the possiblity of going up or left
+				possibleMoves.remove
+			}
+		}
+		return selectHighestScoringMove(possibleMoves);
+	}
 }
+
+AI.prototype.selectHighestScoringMove = function(possibleMoves) {
+	bestMove = 1;
+	bestScore = 0;
+	for(var i=0; i < possibleMoves.length; i++) {
+		if (possibleMoves[i].score > bestScore) {
+			bestMove = possibleMoves[i];
+		}
+	}
+	return bestMove;
+}
+
