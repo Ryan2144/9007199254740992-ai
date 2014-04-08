@@ -1,4 +1,4 @@
-animationDelay = 300;
+animationDelay = 200;
 
 // Wait till the browser is ready to render the game (avoids glitches)
 window.requestAnimationFrame(function () {
