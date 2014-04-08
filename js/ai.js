@@ -27,7 +27,7 @@ AI.prototype.isBottomFull = function () {
 /*
 Return the move from the given list of possible moves with best score but following these rules:
  - Never up unless only possible
- - Don't move left unless bottom is full
+ - Don't move left unless bottom is full (see above function)
 
 A move is an object defined as { direction: direction, score: score }
  - Direction -> 0: up, 1: right, 2: down, 3: left
