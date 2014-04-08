@@ -25,12 +25,14 @@ AI.prototype.isBottomFull = function () {
 }
 
 /*
-Return the move from the given list of possible moves
+Return the move from the given list of possible moves with best score but following these rules:
  - Never up unless only possible
  - Don't move left unless bottom is full
 
 A move is an object defined as { direction: direction, score: score }
-with score being the gridScore after the move is completed in the given direction
+ - Direction -> 0: up, 1: right, 2: down, 3: left
+ - Score -> calculated grid score after the move is completed in the given direction
+
 */
 AI.prototype.selectBestMove = function(possibleMoves) {
 
