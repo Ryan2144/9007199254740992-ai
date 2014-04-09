@@ -35,9 +35,10 @@ A move is an object defined as { direction: direction, score: score }
 
 */
 AI.prototype.selectBestMove = function(possibleMoves) {
+
 	badList = [];
 	if(possibleMoves.length == 1) {
-		return possibleMoves[1];
+		return possibleMoves[0];
 	}
 	else if(!this.isBottomFull()) {
 		for (var i=0; i < possibleMoves.length; i++) {
