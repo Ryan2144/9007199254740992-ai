@@ -35,30 +35,47 @@ A move is an object defined as { direction: direction, score: score }
 
 */
 AI.prototype.selectBestMove = function(possibleMoves) {
-	if (possibleMoves.length == 1 && possibleMoves[0] == 0) { //check if up is only move (0 means up)
-		return possibleMoves[0];
+	badList = [];
+	if(possibleMoves.length == 1) {
+		return possibleMoves[1];
 	}
-	else if (isBottomFull()) { //if bottom is full just do the best move
-		return selectHighestScoringMove(possibleMoves);
-	}
-	else { //bottom is not full, possible directions are only down and right
+	else if(!this.isBottomFull()) {
 		for (var i=0; i < possibleMoves.length; i++) {
-			if (possibleMoves[i] == 0 || possibleMoves[i] == 3 ) { //get rid of the possiblity of going up or left
-				possibleMoves.remove
-			}
+			currentMove = possibleMoves[i];
+			if(currentMove.direction == 0 || currentMove.direction == 3) {
+				badList.push(possibleMoves.splice(i, 1)[0]);
+			}	
 		}
-		return selectHighestScoringMove(possibleMoves);
 	}
+
+	if(upMoveIndex = this.findUpMoveIndex(possibleMoves)) {
+		badList.push(possibleMoves.splice(upMoveIndex, 1)[0]);
+	}
+
+ 	if(possibleMoves.length > 0)
+		return this.selectHighestScoringMove(possibleMoves);
+	
+	return this.selectHighestScoringMove(badList);
 }
 
 AI.prototype.selectHighestScoringMove = function(possibleMoves) {
-	bestMove = 1;
+	bestMove = -1;
 	bestScore = 0;
-	for(var i=0; i < possibleMoves.length; i++) {
+	for(var i = 0; i < possibleMoves.length; i++) {
 		if (possibleMoves[i].score > bestScore) {
 			bestMove = possibleMoves[i];
+			bestScore = possibleMoves[i].score
 		}
 	}
 	return bestMove;
 }
+
+AI.prototype.findUpMoveIndex = function(possibleMoves) {
+	for (var i = 0; i < possibleMoves.length; i++) {
+		if (possibleMoves[i].direction == 0) {
+			return i;
+		}
+	}
+	return null;
+};
 
